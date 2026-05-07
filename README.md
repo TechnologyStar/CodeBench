@@ -2,7 +2,9 @@
 
 A lightweight, API-first framework for evaluating AI coding agents (Claude Code, OpenAI Codex, etc.) with sandboxed code execution, bug detection, and a built-in Web UI.
 
-Built on top of [OpenCompass](https://github.com/open-compass/opencompass) by [Shanghai AI Laboratory](https://www.shanghaitech.edu.cn/). This project extends the original evaluation infrastructure with modern coding agent workflows, sandboxed execution, and a streamlined API server.
+Built on top of [OpenCompass](https://github.com/open-compass/opencompass) by [Shanghai AI Laboratory](https://www.shlab.org.cn/). This project extends the original evaluation infrastructure with modern coding agent workflows, sandboxed execution, and a streamlined API server.
+
+[中文](README_zh.md) | English | [日本語](README_ja.md) | [Русский](README_ru.md) | [Français](README_fr.md)
 
 ## Features
 
@@ -70,7 +72,7 @@ python -m pytest tests/test_sandbox.py tests/test_agents.py -v
 
 ## Acknowledgments
 
-This project is built on [OpenCompass](https://github.com/open-compass/opencompass), an open-source evaluation framework developed by [Shanghai AI Laboratory (上海人工智能实验室)](https://www.shanghaitech.edu.cn/). We extend our sincere gratitude to the OpenCompass team for their foundational work in LLM evaluation infrastructure.
+This project is built on [OpenCompass](https://github.com/open-compass/opencompass), an open-source evaluation framework developed by [Shanghai AI Laboratory](https://www.shlab.org.cn/). We extend our sincere gratitude to the OpenCompass team for their foundational work in LLM evaluation infrastructure.
 
 ## License
 
