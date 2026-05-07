@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenCompass Dev</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <!-- 侧边栏 -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">OpenCompass</span>
+        <span class="logo-badge">Dev</span>
+      </div>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item active" data-page="dashboard">
+        <span class="nav-icon">📊</span><span>仪表盘</span>
+      </li>
+      <li class="nav-item" data-page="tasks">
+        <span class="nav-icon">📋</span><span>任务列表</span>
+      </li>
+      <li class="nav-item" data-page="submit">
+        <span class="nav-icon">▶️</span><span>提交任务</span>
+      </li>
+      <li class="nav-item" data-page="sandbox">
+        <span class="nav-icon">🖥️</span><span>沙箱调试</span>
+      </li>
+      <li class="nav-item" data-page="bugs">
+        <span class="nav-icon">🐛</span><span>Bug 检测</span>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="status-indicator" id="statusIndicator">
+        <span class="status-dot"></span>
+        <span class="status-text">已连接</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容区 -->
+  <main class="main-content">
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <h1 class="page-title" id="pageTitle">仪表盘</h1>
+      <div class="topbar-actions">
+        <button class="btn btn-sm btn-outline" id="refreshBtn">🔄 刷新</button>
+      </div>
+    </header>
+
+    <!-- 仪表盘 -->
+    <section class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="statTotal">0</div>
+          <div class="stat-label">总任务</div>
+        </div>
+        <div class="stat-card accent-green">
+          <div class="stat-value" id="statCompleted">0</div>
+          <div class="stat-label">已完成</div>
+        </div>
+        <div class="stat-card accent-blue">
+          <div class="stat-value" id="statRunning">0</div>
+          <div class="stat-label">运行中</div>
+        </div>
+        <div class="stat-card accent-red">
+          <div class="stat-value" id="statFailed">0</div>
+          <div class="stat-label">失败</div>
+        </div>
+        <div class="stat-card accent-yellow">
+          <div class="stat-value" id="statPaused">0</div>
+          <div class="stat-label">已暂停</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statSuccessRate">-</div>
+          <div class="stat-label">成功率</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="card-title">最近任务</h3>
+        <div class="table-wrapper">
+          <table class="data-table" id="recentTasks">
+            <thead>
+              <tr><th>ID</th><th>类型</th><th>状态</th><th>创建时间</th><th>操作</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 任务列表 -->
+    <section class="page" id="page-tasks">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">所有任务</h3>
+          <div class="filter-group">
+            <select class="select-sm" id="taskFilter">
+              <option value="">全部</option>
+              <option value="pending">等待中</option>
+              <option value="running">运行中</option>
+              <option value="completed">已完成</option>
+              <option value="failed">失败</option>
+              <option value="paused">已暂停</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table" id="allTasks">
+            <thead>
+              <tr><th>ID</th><th>类型</th><th>状态</th><th>通过/总数</th><th>耗时</th><th>操作</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- 任务详情 -->
+      <div class="card" id="taskDetail" style="display:none">
+        <h3 class="card-title">任务详情</h3>
+        <div id="taskDetailContent"></div>
+      </div>
+    </section>
+
+    <!-- 提交任务 -->
+    <section class="page" id="page-submit">
+      <div class="card">
+        <h3 class="card-title">提交编码智能体评估</h3>
+        <form id="submitForm" class="form">
+          <div class="form-group">
+            <label class="form-label">智能体类型</label>
+            <select class="form-select" name="agent_type">
+              <option value="claude">Claude Code</option>
+              <option value="codex">OpenAI Codex</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">模型</label>
+            <input class="form-input" name="model" value="claude-sonnet-4-20250514" placeholder="模型名称">
+          </div>
+          <div class="form-group">
+            <label class="form-label">API Key</label>
+            <input class="form-input" name="api_key" value="ENV" placeholder="API Key 或 ENV">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Base URL (可选)</label>
+            <input class="form-input" name="base_url" placeholder="自定义 API 地址">
+          </div>
+          <div class="form-divider"></div>
+          <div class="form-group">
+            <label class="form-label">任务描述</label>
+            <textarea class="form-textarea" name="description" rows="3" placeholder="描述编码任务..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">编程语言</label>
+            <select class="form-select" name="language">
+              <option value="python">Python</option>
+              <option value="javascript">JavaScript</option>
+              <option value="java">Java</option>
+              <option value="cpp">C++</option>
+              <option value="bash">Bash</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">测试用例 (JSON)</label>
+            <textarea class="form-textarea code" name="test_cases" rows="5" placeholder='[{"code": "assert solution(2,3) == 5"}]'></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">难度</label>
+            <select class="form-select" name="difficulty">
+              <option value="easy">简单</option>
+              <option value="medium" selected>中等</option>
+              <option value="hard">困难</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">▶ 提交评估</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 沙箱调试 -->
+    <section class="page" id="page-sandbox">
+      <div class="card">
+        <h3 class="card-title">在线代码执行</h3>
+        <div class="sandbox-layout">
+          <div class="sandbox-input">
+            <div class="form-group">
+              <label class="form-label">语言</label>
+              <select class="form-select" id="sandboxLang">
+                <option value="python">Python</option>
+                <option value="bash">Bash</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">代码</label>
+              <textarea class="form-textarea code" id="sandboxCode" rows="12" placeholder="print('Hello, World!')"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">超时 (秒)</label>
+              <input class="form-input" id="sandboxTimeout" type="number" value="10">
+            </div>
+            <button class="btn btn-primary" id="sandboxRun">▶ 执行</button>
+          </div>
+          <div class="sandbox-output">
+            <div class="output-header">
+              <span>输出</span>
+              <span class="badge" id="sandboxStatus"></span>
+            </div>
+            <pre class="output-stdout" id="sandboxStdout"></pre>
+            <pre class="output-stderr" id="sandboxStderr"></pre>
+            <div class="output-meta" id="sandboxMeta"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bug 检测 -->
+    <section class="page" id="page-bugs">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Bug 检测报告</h3>
+          <div class="form-group inline">
+            <input class="form-input" id="bugTaskId" placeholder="输入任务 ID">
+            <button class="btn btn-sm btn-primary" id="bugAnalyze">🔍 分析</button>
+          </div>
+        </div>
+        <div id="bugReport"></div>
+      </div>
+    </section>
+
+    <!-- Toast 通知 -->
+    <div class="toast-container" id="toastContainer"></div>
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
