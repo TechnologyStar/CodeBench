@@ -352,6 +352,17 @@ r'CustomError[:\s]+(.+)': (
 
 ---
 
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Development Guide](docs/GUIDE.md) | Complete guide: setup, features, configuration, development |
+| [API Reference](docs/API_REFERENCE.md) | Full REST API documentation with examples |
+| [Bug Detection Reference](docs/BUG_DETECTION.md) | Error patterns, severity levels, confidence scoring |
+| [Contributing Guide](docs/CONTRIBUTING.md) | Development workflow, coding standards, PR process |
+
+---
+
 ## Acknowledgments
 
 CodeBench is built on [OpenCompass](https://github.com/open-compass/opencompass) ([official site](https://opencompass.org.cn/)), an open-source evaluation framework developed by [Shanghai AI Laboratory](https://www.shlab.org.cn/). We extend our sincere gratitude to the OpenCompass team for their foundational work in LLM evaluation infrastructure, which made this project possible.
